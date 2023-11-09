@@ -36,7 +36,7 @@ def store_descriptors(descriptor, image):
 
 def fetchKeypointFromFile(image):
     filepath = "data/keypoints/" + str(image.split('.')) + ".txt"
-    key_points_list = []
+    keypoint = []
     file = open(filepath, 'rb')
     deserialized_key_points = pickle.load(file)
     file.close()
@@ -50,8 +50,8 @@ def fetchKeypointFromFile(image):
             octave=point[4],
             class_id=point[5]
         )
-        key_points_list.append(temp)
-    return key_points_list
+        keypoint.append(temp)
+    return keypoint
 
 
 def fetchDescriptorFromFile(image):
