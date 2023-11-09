@@ -1,0 +1,7 @@
+path: 'models/detection/datasets/'
+train: 'train/images'
+val: 'valid/images'
+
+
+names: 
+  0: 'street-vendor'
