@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import pickle
+import os
 
 
 class Sift:
@@ -35,7 +36,7 @@ def store_descriptors(descriptor, image):
 
 def fetchKeypointFromFile(image):
     filepath = "data/keypoints/" + str(image.split('.')) + ".txt"
-    keypoint = []
+    key_points_list = []
     file = open(filepath, 'rb')
     deserialized_key_points = pickle.load(file)
     file.close()
@@ -49,8 +50,8 @@ def fetchKeypointFromFile(image):
             octave=point[4],
             class_id=point[5]
         )
-        keypoint.append(temp)
-    return keypoint
+        key_points_list.append(temp)
+    return key_points_list
 
 
 def fetchDescriptorFromFile(image):
@@ -68,6 +69,7 @@ def calculate_results_for_pairs(image_1, image_2):
     descriptor2 = fetchDescriptorFromFile(image_2)
     matches = calculateMatches(descriptor1, descriptor2)
     score = calculateScore(len(matches), len(keypoint1), len(keypoint2))
+    return score
 
 
 def calculateScore(matches, keypoint1, keypoint2):
@@ -102,3 +104,19 @@ def calculateMatches(des1, des2):
     return topResults
 
 
+def check_and_add_image(image_path, folder_path, threshold=70):
+    sift = Sift()
+    image_key_points, image_descriptor = get_descriptor_and_key_point(compute_sift(sift, image_path))
+    if len(os.listdir(folder_path)) != 0:
+        for filename in os.listdir(folder_path):
+            score = calculate_results_for_pairs(image_path, filename)
+            if score >= threshold:
+                return False
+            else:
+                store_descriptors(image_descriptor, image_path)
+                store_key_points(image_key_points, image_path)
+                return image_path
+    else:
+        store_descriptors(image_descriptor, image_path)
+        store_key_points(image_key_points, image_path)
+        return image_path

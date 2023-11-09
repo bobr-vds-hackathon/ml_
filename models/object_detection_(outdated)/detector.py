@@ -28,7 +28,7 @@ class Detector(keras.models.Model):
         subclass_activation = "softmax"
         self._classifier = TimeDistributed(layer=Dense(units=num_detection_classes, activation= subclass_activation, kernel_initializer=class_initializer))
 
-        self._regressor = TimeDistributed(layer=Dense(units= 4 * (num_detection_classes - 1), activation= "linear", kernel_initializer=regressor_initializer))
+        self._regressor = TimeDistributed(layer=Dense(units=4 * (num_detection_classes - 1), activation="linear", kernel_initializer=regressor_initializer))
 
     def call(self, input_, training):
-        pass    
+        pass
