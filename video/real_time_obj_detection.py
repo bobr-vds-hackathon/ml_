@@ -16,28 +16,34 @@ def check_folder(input_folder, output_folder):
                     processed_file.add(filename)
                     data = parse_json(filename)
                     file_id = extract_id(filename)
-                    for i, detected_object in enumerate(VideoStream(link_constructor(data)).rtd()):
+                    for i, detected_object in enumerate(VideoStream(link_constructor(data)).real_time_detection()):
                         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-                        filename = f'{output_folder}/{file_id}/{file_id}_{i}'
-                        if check_and_add_image(filename, 'ml_/models/sift/data/images') is True:
-                            cv2.imwrite(filename, detected_object)
-                            cv2.imwrite('ml_/models/sift/data/images'+filename, detected_object)
-                            print(timestamp)
+                        filename_image = f'{output_folder}/{file_id}/{file_id}_{i}.jpeg'
+                        if check_and_add_image(filename_image, 'ml_/models/sift/data/images') is not False:
+                            cv2.imwrite(filename_image, detected_object)
+                            cv2.imwrite('ml_/models/sift/data/images/'+filename, detected_object)
+                            message = {"id": file_id,
+                                       "file": filename_image,
+                                       "timestamp": timestamp}
+                            print(message)
                         else:
-                            print("already exists")
+                            pass
 
                 else:
                     processed_file.add(filename)
                     file_id = extract_id(filename)
-                    for i, detected_object in enumerate(VideoStream(link_constructor(filename)).rtd()):
+                    for i, detected_object in enumerate(VideoStream(filename).real_time_detection()):
                         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-                        filename = f'{output_folder}/{file_id}/{file_id}_{i}'
-                        if check_and_add_image(filename, 'ml_/models/sift/data/images') is True:
+                        filename_image = f'{output_folder}/{file_id}/{file_id}_{i}.jpeg'
+                        if check_and_add_image(filename, 'ml_/models/sift/data/images') is not False:
                             cv2.imwrite(filename, detected_object)
-                            cv2.imwrite('ml_/models/sift/data/images'+filename, detected_object)
-                            print(timestamp)
+                            cv2.imwrite('ml_/models/sift/data/images/'+filename, detected_object)
+                            message = {"id": file_id,
+                                       "file": filename_image,
+                                       "timestamp": timestamp}
+                            print(message)
                         else:
-                            print("already exists")
+                            pass
 
 
 if __name__ == "main":

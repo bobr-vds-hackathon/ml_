@@ -1,6 +1,6 @@
 import cv2
 from ultralytics import YOLO
-import datetime
+import time
 
 
 class VideoStream:
@@ -8,24 +8,27 @@ class VideoStream:
         self.url = url
         self.video_ = cv2.VideoCapture(self.url)
         self.model = YOLO("best.pt")
+        self.detection_active = True
+        self.last_detection_time = None
 
-    def rtd(self):
+    def real_time_detection(self):
+        cap = cv2.VideoCapture(self.url)
         while True:
-            ret, frame = self.video_.read()
+            ret, frame = cap.read()
             if not ret:
                 break
-            frame = cv2.resize(frame, (640, 640))
-            results = self.model(frame)
-            for pred in results.pred[0]:
-                confidence = pred[4]
-                if confidence > 0.7:
-                    x_min, y_min, x_max, y_max = map(int, pred[:4])
-                    yield frame[y_min:y_max, x_min:x_max]
+            current_time = time.time()
+            if self.detection_active:
+                if self.last_detection_time and current_time - self.last_detection_time < 60:
+                    self.detection_active = False
+                else:
+                    results = self.model(frame)
+                    if results:
+                        self.last_detection_time = current_time
+                        self.detection_active = False
+            else:
+                if current_time - self.last_detection_time >= 60:
+                    self.detection_active = True
 
-                    cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
-                    cv2.putText(frame, f'Class: 0', (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-                                (0, 255, 0), 2)
-            cv2.imshow('Object Detection', frame)
 
-
-VideoStream('236.VC19.1.7 Набережная Табло 2023-09-26 18-50-00_000+0300 [8m0s].mp4').rtd()
+# VideoStream('pexels_videos_1338598 (1080p).mp4').real_time_detection()

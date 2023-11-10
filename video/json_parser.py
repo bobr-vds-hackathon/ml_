@@ -1,6 +1,7 @@
 import json
 import re
 
+
 def parse_json(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
@@ -17,3 +18,4 @@ def extract_id(file_path):
         return int(match.group(2))
     else:
         return None
+
