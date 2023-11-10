@@ -106,7 +106,8 @@ def calculateMatches(des1, des2):
 
 def check_and_add_image(image_path, folder_path, threshold=70):
     sift = Sift()
-    image_key_points, image_descriptor = get_descriptor_and_key_point(compute_sift(sift, image_path))
+    img = image_to_gray_scale(image_path)
+    image_key_points, image_descriptor = get_descriptor_and_key_point(compute_sift(sift, img))
     if len(os.listdir(folder_path)) != 0:
         for filename in os.listdir(folder_path):
             score = calculate_results_for_pairs(image_path, filename)
@@ -120,3 +121,7 @@ def check_and_add_image(image_path, folder_path, threshold=70):
         store_descriptors(image_descriptor, image_path)
         store_key_points(image_key_points, image_path)
         return image_path
+
+
+def image_to_gray_scale(image):
+    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

@@ -13,9 +13,9 @@ def link_constructor(data):
 
 
 def extract_id(file_path):
-    match = re.search(r'(video|stream)-(\d+)', file_path)
+    match = re.search(r'(video|stream)_(\d+)', file_path)
     if match:
-        return int(match.group(2))
+        return str(match.group(2))
     else:
         return None
 
