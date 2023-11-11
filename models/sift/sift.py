@@ -10,7 +10,8 @@ class Sift:
 
 
 def compute_sift(sift: Sift, image):
-    computed_sift = sift.sift_obj.detectAndCompute(image, None)
+    img = cv2.imread(image)
+    computed_sift = sift.sift_obj.detectAndCompute(img, None)
     return computed_sift
 
 
@@ -106,8 +107,8 @@ def calculateMatches(des1, des2):
 
 def check_and_add_image(image_path, folder_path, threshold=70):
     sift = Sift()
-    img = image_to_gray_scale(image_path)
-    image_key_points, image_descriptor = get_descriptor_and_key_point(compute_sift(sift, img))
+    data = compute_sift(sift, image_path)
+    image_key_points, image_descriptor = get_descriptor_and_key_point(data)
     if len(os.listdir(folder_path)) != 0:
         for filename in os.listdir(folder_path):
             score = calculate_results_for_pairs(image_path, filename)
@@ -116,6 +117,7 @@ def check_and_add_image(image_path, folder_path, threshold=70):
             else:
                 store_descriptors(image_descriptor, image_path)
                 store_key_points(image_key_points, image_path)
+                cv2.imwrite('data/images', image_path)
                 return image_path
     else:
         store_descriptors(image_descriptor, image_path)
@@ -125,3 +127,11 @@ def check_and_add_image(image_path, folder_path, threshold=70):
 
 def image_to_gray_scale(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+
+if __name__ == "__main__":
+    sift_ = Sift()
+    a = compute_sift(sift=sift_, image='../../output/1/1_0.jpeg')
+    c = get_descriptor_and_key_point(a)
+    b = check_and_add_image(image_path='1_0.jpeg', folder_path='data/images')
+    print(b)

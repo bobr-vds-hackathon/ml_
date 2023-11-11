@@ -1,13 +1,14 @@
 import cv2
 from ultralytics import YOLO
 import time
+import sys
 
 
 class VideoStream:
     def __init__(self, url: str):
         self.url = url
         self.video_ = cv2.VideoCapture(self.url)
-        self.model = YOLO("video/best.pt")
+        self.model = YOLO(sys.path[0]+"/video/best.pt")
         self.detection_active = True
         self.last_detection_time = None
 
@@ -32,14 +33,17 @@ class VideoStream:
                                 detection_count = result.boxes.shape[0]
                                 for i in range(detection_count):
                                     self.last_detection_time = current_time
-                                    tmp_pic = result.orig_img
                                     bounding_box = result.boxes.xyxy[i].cpu().numpy()
+                                    # Draw bounding box
+                                    cv2.rectangle(frame,
+                                                  (int(bounding_box[0]), int(bounding_box[1])),
+                                                  (int(bounding_box[2]), int(bounding_box[3])),
+                                                  (0, 255, 0), 2)
                                     print(bounding_box)
                                     if len(result.boxes) != 0:
-                                        yield result.orig_img
+                                        yield frame
                 else:
-                    if current_time - self.last_detection_time >= 2:
+                    if current_time - self.last_detection_time >= 100:
                         self.detection_active = True
         finally:
             cap.release()
-

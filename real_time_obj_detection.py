@@ -34,7 +34,7 @@ def check_folder(input_folder, output_folder):
                         #if sift.check_and_add_image(image_filename, 'ml_/models/sift/data/images') is not False:
                         cv2.imwrite(f'ml_/models/sift/data/images/' + image_filename, detected_object)
                         message = {"id": file_id, "file": image_filename, "timestamp": timestamp}
-                        json.dumps(message)
+                        print(json.dumps(message))
                     processed_file.add(filename)
                 except Exception as e:
                     print(f"Error processing {filename}: {e}")
