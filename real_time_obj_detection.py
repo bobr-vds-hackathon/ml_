@@ -18,7 +18,7 @@ def check_folder(input_folder, output_folder):
             if os.path.isfile(filepath) and filename not in processed_file:
                 try:
                     if filename.endswith('.json'):
-                        data = parse_json(filepath)
+                        data = parse_json(filename)
                         file_id = extract_id(filename)
                         video_stream = VideoStream(link_constructor(data)).real_time_detection()
                     else:
@@ -37,7 +37,7 @@ def check_folder(input_folder, output_folder):
                         message = {"id": file_id, "file": image_filename, "timestamp": timestamp}
                         print(json.dumps(message), flush=True)
                     processed_file.add(filename)
-                    time.sleep(2)
+                    time.sleep(100)
                 except Exception as e:
                     print(f"Error processing {filename}: {e}", flush=True)
 
