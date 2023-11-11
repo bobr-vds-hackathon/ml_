@@ -7,6 +7,7 @@ import datetime
 import cv2
 from models.sift import sift
 from video.json_parser import parse_json, link_constructor, extract_id
+import time
 
 
 def check_folder(input_folder, output_folder):
@@ -36,6 +37,7 @@ def check_folder(input_folder, output_folder):
                         message = {"id": file_id, "file": image_filename, "timestamp": timestamp}
                         print(json.dumps(message), flush=True)
                     processed_file.add(filename)
+                    time.sleep(100)
                 except Exception as e:
                     print(f"Error processing {filename}: {e}", flush=True)
 
