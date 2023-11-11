@@ -13,7 +13,7 @@ def link_constructor(data):
 
 
 def extract_id(file_path):
-    match = re.search(r'(video|stream)_(\d+)', file_path)
+    match = re.search(r'(video|stream)_([a-z0-9-]+)', file_path)
     if match:
         return str(match.group(2))
     else:
