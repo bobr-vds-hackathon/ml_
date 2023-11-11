@@ -25,7 +25,7 @@ def process_data():
             resized = cv2.resize(img, (640, 640), interpolation=cv2.INTER_AREA)
             cv2.imwrite(file, resized)
         except TypeError:
-            print("unecpected filetype")
+            print("unecpected filetype", flush=True)
 
 
 def retrain_model():

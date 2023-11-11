@@ -39,7 +39,7 @@ class VideoStream:
                                                   (int(bounding_box[0]), int(bounding_box[1])),
                                                   (int(bounding_box[2]), int(bounding_box[3])),
                                                   (0, 255, 0), 2)
-                                    print(bounding_box)
+                                    print(bounding_box, flush=True)
                                     if len(result.boxes) != 0:
                                         yield frame
                 else:
