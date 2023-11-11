@@ -18,7 +18,7 @@ def check_folder(input_folder, output_folder):
             if os.path.isfile(filepath) and filename not in processed_file:
                 try:
                     if filename.endswith('.json'):
-                        data = parse_json(filename)
+                        data = parse_json(filepath)
                         file_id = extract_id(filename)
                         video_stream = VideoStream(link_constructor(data)).real_time_detection()
                     else:

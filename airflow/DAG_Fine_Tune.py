@@ -16,7 +16,7 @@ dataset_folder = sys.argv[1]
 def process_data():
     data_path = dataset_folder
     labels_path = os.path.join(data_path, "labels/")
-    for file in os.listdir(data_path):
+    for file in os.listdir(os.path.join(data_path, "images/")):
         file_label_path = labels_path + str(file.split('.')) + "txt"
         with open(file_label_path, 'w', encoding='utf-8') as f:
             pass
@@ -29,21 +29,21 @@ def process_data():
 
 
 def retrain_model():
-    model = YOLO('best.pt')
+    model = YOLO('video/best.pt')
     model.train(data='', patience=10, epochs=60, exist_ok=True)
-    pass
 
 
 def evaluate_model():
     test_data_path = "/path/to/test/data"
     test_data = ""
-    model = YOLO()
+    model = YOLO('video/best.pt')
     predictions = model.predict(test_data)
 
 
-def clear_data(**kwargs):
+def clear_data():
     temp_data_path = '/path/to/temp/data'
     shutil.rmtree(temp_data_path)
+    os.remove(os.path.join(dataset_folder, "labels/"))
 
 
 default_args = {
