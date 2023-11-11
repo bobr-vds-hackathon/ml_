@@ -43,7 +43,7 @@ class VideoStream:
                                     if len(result.boxes) != 0:
                                         yield frame
                 else:
-                    if current_time - self.last_detection_time >= 100:
+                    if current_time - self.last_detection_time >= 10:
                         self.detection_active = True
         finally:
             cap.release()

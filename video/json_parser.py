@@ -9,7 +9,14 @@ def parse_json(file_path):
 
 
 def link_constructor(data):
-    return f"rtsp://{data['login']}:{data['password']}@{data['ip']}"
+    print("Linking constructor", flush=True)
+    credentials = ""
+    if 'login' in data:
+        credentials = data['login']
+        if 'password' in data:
+            credentials += f":{data['password']}"
+        credentials += "@"
+    return f"rtsp://{credentials}{data['url']}"
 
 
 def extract_id(file_path):
