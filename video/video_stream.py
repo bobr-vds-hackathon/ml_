@@ -14,7 +14,6 @@ class VideoStream:
         self.last_detection_time = None
 
     def real_time_detection(self):
-        try:
             cap = cv2.VideoCapture(self.url)
             try:
                 while True:
@@ -49,5 +48,4 @@ class VideoStream:
                             self.detection_active = True
             finally:
                 cap.release()
-        except FileNotFoundError:
-            traceback.print_exc()
+
